@@ -1,5 +1,5 @@
 {
-    "name": "connector-comment-service",
+    "name": "connector-product-service",
     "config": {
         "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
         "tasks.max": "1",
@@ -7,9 +7,9 @@
         "database.port": "5432",
         "database.user": "postgres",
         "database.password": "postgres",
-        "database.dbname": "comment",
-        "topic.prefix": "cdc-comment-service",
+        "database.dbname": "product",
+        "topic.prefix": "cdc-product-service",
         "schema.include.list": "public",
-        "slot.name": "comment"
+        "slot.name": "product"
     }
 }
