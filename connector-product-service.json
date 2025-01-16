@@ -1,5 +1,5 @@
 {
-    "name": "order-service-connector",
+    "name": "connector-comment-service",
     "config": {
         "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
         "tasks.max": "1",
@@ -7,9 +7,9 @@
         "database.port": "5432",
         "database.user": "postgres",
         "database.password": "postgres",
-        "database.dbname": "order",
+        "database.dbname": "comment",
         "topic.prefix": "cdc",
         "schema.include.list": "public",
-        "slot.name": "order"
+        "slot.name": "comment"
     }
 }
