@@ -1,5 +1,5 @@
 {
-    "name": "inventory-connector",
+    "name": "product-service-connector",
     "config": {
         "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
         "tasks.max": "1",
@@ -8,7 +8,8 @@
         "database.user": "postgres",
         "database.password": "postgres",
         "database.dbname": "product",
-        "topic.prefix": "dbserver1",
-        "schema.include.list": "public"
+        "topic.prefix": "cdc",
+        "schema.include.list": "public",
+        "slot.name": "product"
     }
 }
