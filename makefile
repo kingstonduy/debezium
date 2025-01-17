@@ -35,3 +35,7 @@ delete-all:
 	curl -X DELETE http://localhost:8083/connectors/connector-user-service
 	curl -X DELETE http://localhost:8083/connectors/connector-cart-service
 	curl -X DELETE http://localhost:8083/connectors/connector-comment-service
+
+restart-broker:
+	docker-compose stop broker
+	docker-compose --env-file .env up -d broker
