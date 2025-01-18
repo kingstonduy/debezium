@@ -1,4 +1,43 @@
+package main
 
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+func main() {
+	// Read the .env file to get the EXTERNAL_IP value
+	file, err := os.Open(".env")
+	if err != nil {
+		fmt.Printf("Error reading .env file: %v\n", err)
+		return
+	}
+	defer file.Close()
+
+	var externalIP string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, "EXTERNAL_IP=") {
+			externalIP = strings.TrimPrefix(line, "EXTERNAL_IP=")
+			break
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Printf("Error reading .env file: %v\n", err)
+		return
+	}
+
+	if externalIP == "" {
+		fmt.Println("EXTERNAL_IP not found in .env file")
+		return
+	}
+
+	// Define the Docker Compose template
+	template := `
 services:
     zookeeper:
         image: confluentinc/cp-zookeeper:7.5.0
@@ -27,7 +66,7 @@ services:
             KAFKA_BROKER_ID: 1
             KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://34.142.145.208:9092
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://%s:9092
             KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
             KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -115,3 +154,18 @@ volumes:
     control_center_data:
     postgres_data:
     connect_data:
+`
+
+	// Replace ${EXTERNAL_IP} in the template
+	content := fmt.Sprintf(template, externalIP)
+
+	// Write the content to res.yml
+	outputFile := "docker-compose.yaml"
+	err = os.WriteFile(outputFile, []byte(content), 0644)
+	if err != nil {
+		fmt.Printf("Error writing to res.yml: %v\n", err)
+		return
+	}
+
+	fmt.Println("res.yml file generated successfully!")
+}
