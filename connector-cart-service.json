@@ -7,7 +7,7 @@
         "database.port": "5432",
         "database.user": "postgres",
         "database.password": "postgres",
-        "database.dbname": "product",
+        "database.dbname": "cart",
         "topic.prefix": "cdc-cart-service",
         "schema.include.list": "public",
         "slot.name": "cart"
