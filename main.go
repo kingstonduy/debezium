@@ -163,7 +163,7 @@ volumes:
 	outputFile := "docker-compose.yaml"
 	err = os.WriteFile(outputFile, []byte(content), 0644)
 	if err != nil {
-		fmt.Printf("Error writing to res.yml: %v\n", err)
+		fmt.Printf("Error writing to docker-compose.yaml: %v\n", err)
 		return
 	}
 
